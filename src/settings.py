@@ -1,0 +1,1 @@
+PATH_TEMPLATE_DOCX = "assets/templates/order.docx"
