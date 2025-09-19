@@ -123,9 +123,10 @@ class PandasDataRepository:
         self,
         position_str: str,
         case_language: CaseLanguage,
+        param_name: str = "Повна посада",
     ) -> str:
         sh_sheet = self.sheets[Sheet.SH.value]
-        result = sh_sheet[sh_sheet["Повна посада"].str.strip() == position_str.strip()]
+        result = sh_sheet[sh_sheet[param_name].str.strip() == position_str.strip()]
 
         if result.empty:
             self.errors.append(f"Посада не знайдено для аргумента {position_str=}")

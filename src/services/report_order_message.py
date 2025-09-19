@@ -141,8 +141,13 @@ class ReportOrderMessage:
             person=int(person_id),
             case_language=CaseLanguage.DATIVE,
         )
+        position_dative = self.pd_data_repository.get_position_case(
+            position_str=row.iloc[4],
+            case_language=CaseLanguage.DATIVE,
+            param_name="знахідний (без в/ч)"
+        )
 
-        self.ranks[title].append(f"- {rank_dative} {full_name_dative} {row.iloc[4]} \n")
+        self.ranks[title].append(f"- {rank_dative} {full_name_dative} {position_dative} \n")
 
     def _get_change_position(self, row):
         if not self.text_change_position:
