@@ -66,6 +66,7 @@ class ReportOrderMessage:
             format="%d.%m.%Y",
             errors="coerce",
         )
+        arrows["Unnamed: 6"] = arrows["Unnamed: 6"].astype(str)
 
         methods = {
             "ПРИБУВ": self._get_enlisted_in_a_military_unit,
