@@ -9,6 +9,7 @@ from src.views.settings import SettingsView
 from src.views.pages_services.merge import MergeView
 from src.views.pages_services.order import OrderView
 from src.views.pages_services.report_message import ReportMessageView
+from src.views.pages_services.declension import DeclensionView
 
 
 def main(page: ft.Page):
@@ -19,6 +20,7 @@ def main(page: ft.Page):
         path(url=f"/services/{Action.MERGE_PDF.value}", clear=False, view=MergeView().view),
         path(url=f"/services/{Action.CREATE_TEMPLATE_ORDER.value}", clear=False, view=OrderView().view),
         path(url=f"/services/{Action.REPORT_MESSAGE.value}", clear=False, view=ReportMessageView().view),
+        path(url=f"/services/{Action.DECLENSION.value}", clear=False, view=DeclensionView().view),
     ]
 
     Routing(

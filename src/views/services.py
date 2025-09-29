@@ -30,6 +30,12 @@ class ServicesView:
                 "action": Action.MERGE_PDF.value,
                 "button_disabled": False,
             },
+            {
+                "name": "Відмінювання слів",
+                "description": "Конвертує слова з одного відмінка в другі",
+                "action": Action.DECLENSION.value,
+                "button_disabled": False,
+            },
         ]
 
         service_list = ft.ListView(expand=True, spacing=10)

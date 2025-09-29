@@ -5,6 +5,7 @@ class Action(Enum):
     MERGE_PDF = "merge"
     REPORT_MESSAGE = "report_message"
     RESET_DB = "reset_db"
+    DECLENSION = "declension"
 
 
 class Sheet(Enum):
@@ -25,3 +26,4 @@ class PATH(Enum):
     PATH_EXCEL = "path_excel"
     PATH_SERVER_ORDER = "path_server_order"
     PATH_FILES_PDF = "path_files_pdf"
+    PATH_DIR_DECLENSION = "path_dir_declension"
