@@ -24,9 +24,9 @@ class ParamsData:
     def to_dict(self):
         return {
             "gender": self.gender.value,
-            "givenName": self.givenName,
-            "patronymicName": self.patronymicName,
-            "familyName": self.familyName,
+            "givenName": self.givenName.strip() if self.givenName else self.givenName,
+            "patronymicName": self.patronymicName.strip() if self.patronymicName else self.patronymicName,
+            "familyName": self.familyName.strip() if self.familyName else self.familyName,
         }
 
 
