@@ -2,7 +2,7 @@ import flet as ft
 import threading
 import os
 
-from flet_route import Params,Basket
+from flet_route import Params, Basket
 
 from src.constants import Action, PATH
 from src.services.shevchenko_js.constants import Case
@@ -12,6 +12,9 @@ from src.services.validators import IsExistsDirValidator
 
 
 class DeclensionView:
+    def __init__(self):
+        self.path_file = ""
+
     def view(self, page: ft.Page, params: Params, basket: Basket):
         page.title = "Відмінювання слів"
         page.scroll = "auto"
@@ -46,13 +49,12 @@ class DeclensionView:
             label="Файл зі словами",
             read_only=True,
         )
-        path_file = ""
 
         open_file_button = ft.ElevatedButton(
             text="📂 Відкрити згенерований файл",
             icon=ft.Icons.FOLDER_OPEN,
             disabled=True,
-            on_click=lambda e: os.startfile(path_file)
+            on_click=lambda e: os.startfile(self.path_file),
         )
 
         case_checkboxes = [ft.Checkbox(label=case.value, value=False) for case in Case]
@@ -121,21 +123,19 @@ class DeclensionView:
             page.update()
 
             def process():
-                global path_file
-
                 shevchenko_service = ShevchenkoService()
                 dir_path = page.client_storage.get(PATH.PATH_DIR_DECLENSION.value)
 
                 validator_dir = IsExistsDirValidator(page=page)
                 if validator_dir.validate(dir_path):
-                    path_file = shevchenko_service.declension(
+                    self.path_file = shevchenko_service.declension(
                         cases=selected_cases,
                         file_path=selected_file.value,
                         dir_path_save=dir_path,
                         log_output=log_output,
                         page=page,
                     )
-                    if path_file is None:
+                    if self.path_file is None:
                         show_snackbar(
                             page=page,
                             color=ft.Colors.RED_400,

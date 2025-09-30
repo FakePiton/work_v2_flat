@@ -58,7 +58,7 @@ class ShevchenkoService:
 
                 for key, value in res.items():
                     if value:
-                        item[f"{HEADERS[key]} - {case}"] = value
+                        item[f"{case} - {HEADERS[key]}"] = value
 
                 log_output.value += f"{' '.join(row_dict.values())} → {case}: [трансформовано]\n"
                 page.update()
