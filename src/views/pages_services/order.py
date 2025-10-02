@@ -23,6 +23,10 @@ class OrderView:
             label="Додати звіт по простроченим ВЛК",
             value=True,
         )
+        include_overdue_daily_field_food_kits= ft.Checkbox(
+            label="Додати звіт по простроченим ДПНП",
+            value=True,
+        )
 
         checkbox_group = ft.Container(
             content=ft.Column(
@@ -77,6 +81,8 @@ class OrderView:
                 if include_overdue_vlk.value:
                     result += report.show_overdue_vlk() + "\n\n"
 
+                if include_overdue_daily_field_food_kits.value:
+                    result += report.show_overdue_daily_field_food_kits() + "\n\n"
 
                 info_text.value = result
                 page.update()

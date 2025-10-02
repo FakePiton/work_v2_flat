@@ -150,6 +150,30 @@ class PandasDataRepository:
         position = self.get_position_case(position_str, case_language)
         return rank, full_name, position
 
+    def get_overdue_daily_field_food_kits(self):
+        dffk_sheet = self.sheets[Sheet.DFFK.value]
+        now = datetime.now()
+
+        dffk_sheet["1899-12-29 00:00:00.2"] = pd.to_datetime(
+            dffk_sheet["1899-12-29 00:00:00.2"],
+            format="%d.%m.%Y",
+            errors="coerce",
+        )
+
+        columns_names = dffk_sheet.columns.tolist()
+        dffk_sheet[columns_names[1]] = dffk_sheet[columns_names[1]].astype(str)
+
+        result = dffk_sheet[
+            (dffk_sheet[columns_names[1]] == "В СТРОЮ") &
+            (dffk_sheet["Unnamed: 19"].notna()) &
+            (dffk_sheet["1899-12-29 00:00:00.2"].dt.date <= now.date())
+        ]
+
+        if not result.empty:
+            return result
+        else:
+            return None
+
 
 def get_pandas_data_repository(file_path: str) -> PandasDataRepository:
     pandas_data_repository = PandasDataRepository()
@@ -162,6 +186,7 @@ def get_pandas_data_repository(file_path: str) -> PandasDataRepository:
             Sheet.BASE_2.value,
             Sheet.SH.value,
             Sheet.HV.value,
+            Sheet.DFFK.value,
         ]
     )
     return pandas_data_repository

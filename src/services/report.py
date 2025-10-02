@@ -12,7 +12,7 @@ class Report:
         if leaves is None:
             return text
         text = (
-            f"Військово службовці які повинні повернутися з відпустки: \n {'-' * 40} \n"
+            f"Військовослужбовці які повинні повернутися з відпустки: \n {'-' * 40} \n"
         )
 
         for row in leaves.itertuples(index=True):
@@ -32,7 +32,7 @@ class Report:
         if vlk is None:
             return text
         text = (
-            f"Військово службовці які повинні повернутися з ВЛК: \n {'-' * 40} \n"
+            f"Військовослужбовці які повинні повернутися з ВЛК: \n {'-' * 40} \n"
         )
 
         for row in vlk.itertuples(index=True):
@@ -43,4 +43,20 @@ class Report:
                 f"Дата вибуття : {row[13].strftime('%d.%m.%Y')}\n"
                 f"{'-' * 40}\n"
             )
+        return text
+
+    def show_overdue_daily_field_food_kits(self) -> str:
+        text = ""
+        dffk = self.pd_data_repository.get_overdue_daily_field_food_kits()
+
+        if dffk is None:
+            return text
+
+        text = (
+            f"Військовослужбовці які повинні бути зняті з ДПНП: \n {'-' * 40} \n"
+        )
+        counts = dffk["1899-12-29 00:00:00.2"].value_counts().sort_index()
+        for date, count in counts.items():
+            text += f"\nДата: {date.date().strftime('%d.%m.%Y')} ({count} в\с)"
+
         return text

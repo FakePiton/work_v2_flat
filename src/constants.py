@@ -15,6 +15,7 @@ class Sheet(Enum):
     BASE_2 = "base_2"
     SH = "sh"
     HV = "ХВ"
+    DFFK = "ДПНП"
 
 
 class CaseLanguage(Enum):
