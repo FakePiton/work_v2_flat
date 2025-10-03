@@ -34,7 +34,8 @@ class OrderView:
                     ft.Text("⚙️ Параметри", size=18, weight=ft.FontWeight.BOLD),
                     include_create_template,
                     include_overdue_vacation,
-                    include_overdue_vlk
+                    include_overdue_vlk,
+                    include_overdue_daily_field_food_kits,
                 ],
                 spacing=10,
             ),
