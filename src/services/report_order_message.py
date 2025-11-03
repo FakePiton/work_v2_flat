@@ -209,7 +209,7 @@ class ReportOrderMessage:
 
     def get_exclusion(self, row):
         if not self.text_exclusion:
-            self.text_exclusion = "* Виключено із списків військової частини:* \n"
+            self.text_exclusion = "*Виключено із списків військової частини:* \n"
 
         if row.iloc[8] == "В розпорядженні":
             return None
