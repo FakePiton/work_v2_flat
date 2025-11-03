@@ -17,6 +17,7 @@ class ReportOrderMessage:
         self.text_change_position = ""
         self.text_transfer = ""
         self.text_dismissal = ""
+        self.text_exclusion = ""
         self.ranks = defaultdict(list)
 
     def get_report(self, order_date: datetime | None = None):
@@ -43,6 +44,7 @@ class ReportOrderMessage:
             self.text_change_position,
             self.text_transfer,
             self.text_dismissal,
+            self.text_exclusion,
         ]
 
         for element in elements:
@@ -75,6 +77,7 @@ class ReportOrderMessage:
             "ЗВАННЯ": self._get_rank,
             "ПЕРЕВ": self.get_transfer,
             "ЗВІЛЬН": self.get_dismissal,
+            "ВИКЛЮЧ": self.get_exclusion,
         }
 
         result = arrows[
@@ -203,3 +206,22 @@ class ReportOrderMessage:
         )
 
         self.text_dismissal += f"- {rank_accusative} {full_name_accusative} {row.iloc[4]} \n"
+
+    def get_exclusion(self, row):
+        if not self.text_exclusion:
+            self.text_exclusion = "* Виключено із списків військової частини:* \n"
+
+        if row.iloc[8] == "В розпорядженні":
+            return None
+
+        rank_accusative = self.pd_data_repository.get_rank_case(
+            rank_str=row.iloc[2],
+            case_language=CaseLanguage.ACCUSATIVE,
+        )
+        full_name_accusative = self.pd_data_repository.get_full_name_case(
+            person=row.iloc[3],
+            case_language=CaseLanguage.ACCUSATIVE,
+        )
+
+        self.text_exclusion += f"- {rank_accusative} {full_name_accusative} {row.iloc[4]} \n"
+        return None
