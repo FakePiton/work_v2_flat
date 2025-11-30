@@ -6,6 +6,7 @@ class Action(Enum):
     REPORT_MESSAGE = "report_message"
     RESET_DB = "reset_db"
     DECLENSION = "declension"
+    CREATE_DIRECTORY = "create_directory"
 
 
 class Sheet(Enum):
@@ -28,3 +29,4 @@ class PATH(Enum):
     PATH_SERVER_ORDER = "path_server_order"
     PATH_FILES_PDF = "path_files_pdf"
     PATH_DIR_DECLENSION = "path_dir_declension"
+    PATH_DIR_CREATE_DIRECTORY = "path_dir_create_directory"

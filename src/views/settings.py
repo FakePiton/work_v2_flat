@@ -23,9 +23,14 @@ class SettingsView:
             value=page.client_storage.get(PATH.PATH_FILES_PDF.value),
         )
         path_dir_declension = ft.TextField(
-            label="Шлях до деректорії здерігання файлів відмінків",
+            label="Шлях до деректорії зберігання файлів відмінків",
             hint_text="C:/output/",
             value=page.client_storage.get(PATH.PATH_DIR_DECLENSION.value),
+        )
+        path_dir_create_dir = ft.TextField(
+            label="Шлях до деректорії зберігання створених попок",
+            hint_text="C:/output/",
+            value=page.client_storage.get(PATH.PATH_DIR_CREATE_DIRECTORY.value),
         )
 
         def save_settings(e):
@@ -33,6 +38,7 @@ class SettingsView:
             page.client_storage.set(PATH.PATH_SERVER_ORDER.value, path_server_order.value)
             page.client_storage.set(PATH.PATH_FILES_PDF.value, path_files_pdf.value)
             page.client_storage.set(PATH.PATH_DIR_DECLENSION.value, path_dir_declension.value)
+            page.client_storage.set(PATH.PATH_DIR_CREATE_DIRECTORY.value, path_dir_create_dir.value)
 
             snackbar = ft.SnackBar(
                 content=ft.Text("Налаштування збережено"),
@@ -59,6 +65,7 @@ class SettingsView:
                         path_server_order,
                         path_files_pdf,
                         path_dir_declension,
+                        path_dir_create_dir,
                         ft.ElevatedButton(
                             "Зберегти",
                             icon=ft.Icons.SAVE,

@@ -36,6 +36,12 @@ class ServicesView:
                 "action": Action.DECLENSION.value,
                 "button_disabled": False,
             },
+            {
+                "name": "Створити папки",
+                "description": "Створює папки з назвами із файлу",
+                "action": Action.CREATE_DIRECTORY.value,
+                "button_disabled": False,
+            },
         ]
 
         service_list = ft.ListView(expand=True, spacing=10)
