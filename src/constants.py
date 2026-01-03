@@ -17,6 +17,7 @@ class Sheet(Enum):
     SH = "sh"
     HV = "ХВ"
     DFFK = "ДПНП"
+    ORDER_IN_PROCESSING = "НАКАЗ_в процесі"
 
 
 class CaseLanguage(Enum):

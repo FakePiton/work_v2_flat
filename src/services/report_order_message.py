@@ -75,9 +75,9 @@ class ReportOrderMessage:
             "РОЗПОРЯДЖ": self._get_prescription,
             "ПОСАДА": self._get_change_position,
             "ЗВАННЯ": self._get_rank,
-            "ПЕРЕВ": self.get_transfer,
-            "ЗВІЛЬН": self.get_dismissal,
-            "ВИКЛЮЧ": self.get_exclusion,
+            "ПЕРЕВ": self._get_transfer,
+            "ЗВІЛЬН": self._get_dismissal,
+            "ВИКЛЮЧ": self._get_exclusion,
         }
 
         result = arrows[
@@ -177,7 +177,7 @@ class ReportOrderMessage:
             f"{row.iloc[4]} призначено на посаду {position_accusative}\n"
         )
 
-    def get_transfer(self, row):
+    def _get_transfer(self, row):
         if not self.text_transfer:
             self.text_transfer = "*Переведено до інших військових частин:* \n"
 
@@ -192,7 +192,7 @@ class ReportOrderMessage:
 
         self.text_transfer += f"- {rank_accusative} {full_name_accusative} {row.iloc[4]} \n"
 
-    def get_dismissal(self, row):
+    def _get_dismissal(self, row):
         if not self.text_dismissal:
             self.text_dismissal = "*Звільнено з військової служби:* \n"
 
@@ -207,7 +207,7 @@ class ReportOrderMessage:
 
         self.text_dismissal += f"- {rank_accusative} {full_name_accusative} {row.iloc[4]} \n"
 
-    def get_exclusion(self, row):
+    def _get_exclusion(self, row):
         if not self.text_exclusion:
             self.text_exclusion = "*Виключено із списків військової частини:* \n"
 
