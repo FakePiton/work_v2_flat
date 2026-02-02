@@ -32,9 +32,15 @@ class SettingsView:
             hint_text="C:/output/",
             value=page.client_storage.get(PATH.PATH_DIR_CREATE_DIRECTORY.value),
         )
+        path_order = ft.TextField(
+            label="Шлях до шаблона наказу",
+            hint_text="C:/templates/order.doc",
+            value=page.client_storage.get(PATH.PATH_ORDER_TEMPLATE.value),
+        )
 
         def save_settings(e):
             page.client_storage.set(PATH.PATH_EXCEL.value, path_excel.value)
+            page.client_storage.set(PATH.PATH_ORDER_TEMPLATE.value, path_order.value)
             page.client_storage.set(PATH.PATH_SERVER_ORDER.value, path_server_order.value)
             page.client_storage.set(PATH.PATH_FILES_PDF.value, path_files_pdf.value)
             page.client_storage.set(PATH.PATH_DIR_DECLENSION.value, path_dir_declension.value)
@@ -62,6 +68,7 @@ class SettingsView:
                             weight=ft.FontWeight.BOLD
                         ),
                         path_excel,
+                        path_order,
                         path_server_order,
                         path_files_pdf,
                         path_dir_declension,

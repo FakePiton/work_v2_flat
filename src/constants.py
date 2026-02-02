@@ -31,3 +31,4 @@ class PATH(Enum):
     PATH_FILES_PDF = "path_files_pdf"
     PATH_DIR_DECLENSION = "path_dir_declension"
     PATH_DIR_CREATE_DIRECTORY = "path_dir_create_directory"
+    PATH_ORDER_TEMPLATE = "path_order_template"

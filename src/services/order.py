@@ -3,7 +3,6 @@ from docxtpl import DocxTemplate
 from babel.dates import format_date
 from datetime import datetime, timedelta
 from src.services.data_repository import PandasDataRepository
-from src.settings import PATH_TEMPLATE_DOCX
 
 
 class NewOrder:
@@ -34,8 +33,8 @@ class NewOrder:
 
         return path_mount
 
-    def create_template(self, path_dir_server: str):
-        tpl = DocxTemplate(PATH_TEMPLATE_DOCX)
+    def create_template(self, path_dir_server: str, path_order_template: str):
+        tpl = DocxTemplate(path_order_template)
 
         now = datetime.now()
         tomorrow = now + timedelta(days=1)

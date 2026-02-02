@@ -6,7 +6,7 @@ from flet_route import Params,Basket
 from src.constants import Action, PATH
 from src.services.order import NewOrder
 from src.services.report import Report
-from src.services.validators import IsExistsDirValidator
+from src.services.validators import IsExistsDirValidator, IsExistsPathValidator
 
 
 class OrderView:
@@ -69,8 +69,14 @@ class OrderView:
                 if include_create_template.value:
                     dir_server_path = page.client_storage.get(PATH.PATH_SERVER_ORDER.value)
                     validator_dir = IsExistsDirValidator(page=page)
-                    if validator_dir.validate(dir_server_path):
-                        new_order.create_template(path_dir_server=dir_server_path)
+                    path_order_template = page.client_storage.get(PATH.PATH_ORDER_TEMPLATE.value)
+                    validator_file = IsExistsPathValidator(page=page)
+
+                    if validator_dir.validate(dir_server_path) and validator_file.validate(path_order_template):
+                        new_order.create_template(
+                            path_dir_server=dir_server_path, 
+                            path_order_template=path_order_template,
+                        )
                         result += new_order.text_info + "\n\n"
                     else:
                         info_text.value = "Помилка створення шаблону!"
