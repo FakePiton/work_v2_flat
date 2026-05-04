@@ -81,6 +81,26 @@ class PandasDataRepository:
         else:
             return None
 
+    def get_overdue_business_trips(self):
+        bt_sheet = self.sheets[Sheet.VIDR.value]
+        now = datetime.now()
+
+        bt_sheet[bt_sheet.columns[24]] = pd.to_datetime(
+            bt_sheet[bt_sheet.columns[24]],
+            format="%d.%m.%Y",
+            errors="coerce",
+        )
+
+        result = bt_sheet[
+            (bt_sheet[bt_sheet.columns[0]].notna()) &
+            (bt_sheet[bt_sheet.columns[25]].isna()) &
+            (bt_sheet[bt_sheet.columns[24]].dt.date <= now.date())
+        ]
+
+        if not result.empty:
+            return result
+        else:
+            return None
 
     def get_rank_case(
         self,
@@ -187,6 +207,7 @@ def get_pandas_data_repository(file_path: str) -> PandasDataRepository:
             Sheet.SH.value,
             Sheet.HV.value,
             Sheet.DFFK.value,
+            Sheet.VIDR.value,
         ]
     )
     return pandas_data_repository

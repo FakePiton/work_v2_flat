@@ -18,6 +18,7 @@ class Sheet(Enum):
     HV = "ХВ"
     DFFK = "ДПНП"
     ORDER_IN_PROCESSING = "НАКАЗ_в процесі"
+    VIDR = "ВІДР"
 
 
 class CaseLanguage(Enum):

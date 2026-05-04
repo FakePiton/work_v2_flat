@@ -27,6 +27,10 @@ class OrderView:
             label="Додати звіт по простроченим ДПНП",
             value=True,
         )
+        include_overdue_bt= ft.Checkbox(
+            label="Додати звіт по простроченим відрядженнях",
+            value=True,
+        )
 
         checkbox_group = ft.Container(
             content=ft.Column(
@@ -36,6 +40,7 @@ class OrderView:
                     include_overdue_vacation,
                     include_overdue_vlk,
                     include_overdue_daily_field_food_kits,
+                    include_overdue_bt,
                 ],
                 spacing=10,
             ),
@@ -90,6 +95,9 @@ class OrderView:
 
                 if include_overdue_daily_field_food_kits.value:
                     result += report.show_overdue_daily_field_food_kits() + "\n\n"
+                
+                if include_overdue_bt.value:
+                    result += report.show_overdue_business_trips() + "\n\n"
 
                 info_text.value = result
                 page.update()

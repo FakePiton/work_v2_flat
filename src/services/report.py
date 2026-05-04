@@ -60,3 +60,25 @@ class Report:
             text += f"\nДата: {date.date().strftime('%d.%m.%Y')} ({count} в\с)"
 
         return text
+
+    def show_overdue_business_trips(self) -> str:
+        text = ""
+        bt = self.pd_data_repository.get_overdue_business_trips()
+
+        if bt is None:
+            return text
+
+        text = (
+            f"Військовослужбовці які повинні повернутися з відрядження: \n {'-' * 40} \n"
+        )
+       
+        for row in bt.itertuples(index=True):
+            text += (
+                f"ПІБ: {row[2]}\n"
+                f"Підрозділ: {row[3]}\n"
+                f"Відряджений: {row[6]}\n"
+                f"Запланована дата прибуття: {row[25].strftime('%d.%m.%Y')}\n"
+                f"{'-' * 40}\n"
+            )
+        return text
+
