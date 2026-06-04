@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 import pandas as pd
 from collections import defaultdict
 from src.services.data_repository import PandasDataRepository
@@ -18,6 +18,7 @@ class ReportOrderMessage:
         self.text_transfer = ""
         self.text_dismissal = ""
         self.text_exclusion = ""
+        self.text_tvo = ""
         self.ranks = defaultdict(list)
 
     def get_report(self, order_date: datetime | None = None):
@@ -37,6 +38,7 @@ class ReportOrderMessage:
         )
 
         self.get_arrows_sheet(str(number_order))
+        self._get_tvo(oder_number=str(number_order), order_date=self.order_date)
 
         elements = [
             self.text_enlisted_in_a_military_unit,
@@ -45,6 +47,7 @@ class ReportOrderMessage:
             self.text_transfer,
             self.text_dismissal,
             self.text_exclusion,
+            self.text_tvo,
         ]
 
         for element in elements:
@@ -225,3 +228,29 @@ class ReportOrderMessage:
 
         self.text_exclusion += f"- {rank_accusative} {full_name_accusative} {row.iloc[4]} \n"
         return None
+
+    def _get_tvo(self, oder_number: str, order_date: date):
+        pd_tvo = self.pd_data_repository.get_tvo(
+            oder_number=oder_number, 
+            order_date=order_date,
+        )
+
+        if pd_tvo is None:
+            return None
+        
+        self.text_tvo = (
+            f"*ТВО:* \n"
+        )
+
+        for row in pd_tvo.itertuples(index=True):
+            person = self.pd_data_repository.get_person(row[2])
+            full_name_accusative = person.iloc[103].replace(" військової служби за контрактом ", " ")
+            position_accusative = self.pd_data_repository.get_position_case(
+                position_str=row[8],
+                case_language=CaseLanguage.ACCUSATIVE,
+            )
+
+            self.text_tvo += (
+                f"- з {row[11]} тимчасове виконання обов'язків {position_accusative} покладено на {full_name_accusative}\n"
+            )
+

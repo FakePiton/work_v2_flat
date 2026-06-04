@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 import pandas as pd
 from src.constants import Sheet, CaseLanguage
 from typing import Any
@@ -101,6 +101,29 @@ class PandasDataRepository:
             return result
         else:
             return None
+    
+    def get_tvo(self, oder_number: str, order_date: date):
+        order_in_processing_sheet = self.sheets[Sheet.ORDER_IN_PROCESSING.value]
+        columns_names = order_in_processing_sheet.columns.tolist()
+
+        order_in_processing_sheet[columns_names[12]] = pd.to_datetime(
+            order_in_processing_sheet[columns_names[12]],
+            format="%d.%m.%Y",
+            errors="coerce",
+        )
+
+        result = order_in_processing_sheet[
+            (order_in_processing_sheet[columns_names[0]].notna()) &
+            (order_in_processing_sheet[columns_names[11]].astype(str) == oder_number) &
+            (order_in_processing_sheet[columns_names[12]].dt.year == order_date.year) &
+            (order_in_processing_sheet[columns_names[4]] == "ТВО") &
+            (order_in_processing_sheet[columns_names[5]] == "початок")
+        ]
+
+        if not result.empty:
+            return result
+        else:
+            return None
 
     def get_rank_case(
         self,
@@ -194,7 +217,6 @@ class PandasDataRepository:
         else:
             return None
 
-
 def get_pandas_data_repository(file_path: str) -> PandasDataRepository:
     pandas_data_repository = PandasDataRepository()
     pandas_data_repository.read_all_sheets(
@@ -208,6 +230,7 @@ def get_pandas_data_repository(file_path: str) -> PandasDataRepository:
             Sheet.HV.value,
             Sheet.DFFK.value,
             Sheet.VIDR.value,
+            Sheet.ORDER_IN_PROCESSING.value,
         ]
     )
     return pandas_data_repository
