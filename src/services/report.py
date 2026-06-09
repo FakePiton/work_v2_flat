@@ -82,3 +82,29 @@ class Report:
             )
         return text
 
+    def show_message_staff(self):
+        text = ""
+
+        leaves = self.pd_data_repository.get_overdue_leave()
+        bt = self.pd_data_repository.get_overdue_business_trips()
+
+        if leaves is None and bt is None:
+            return text
+
+        text = "Бажаю здоров'я!\n"
+
+        if leaves is not None: 
+            text += "Військовослужбовці які повинні повернутися після відпустки:\n"
+            for row in leaves.itertuples(index=True):
+                text += (
+                    f"- {row[2]} [{row[3]}] дата закінчення {row[22].strftime('%d.%m.%Y')}\n"
+                )
+
+        if bt is not None:
+            text += "Військовослужбовці які повинні повернутися після відрядження:\n"
+            for row in bt.itertuples(index=True):
+                text += (
+                    f"- {row[2]} [{row[3]}] дата закінчення {row[25].strftime('%d.%m.%Y')}\n"
+                )
+
+        return text
