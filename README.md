@@ -11,5 +11,5 @@ python -m src.main
 Create app for windowed
 
 ```
-pyinstaller --onedir --windowed src/main.py
+pyinstaller --onedir --windowed --name work_v2 src/main.py
 ```
