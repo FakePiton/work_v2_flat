@@ -33,7 +33,7 @@ class OrderView:
         )
         create_message_staff= ft.Checkbox(
             label="Згенерувати повідомлення діловодам",
-            value=False,
+            value=True,
         )
 
         checkbox_group = ft.Container(
@@ -104,7 +104,7 @@ class OrderView:
                 if include_overdue_bt.value:
                     result += report.show_overdue_business_trips() + "\n\n"
                 
-                if create_message_staff:
+                if create_message_staff.value:
                     result += report.show_message_staff() + "\n\n"
 
                 info_text.value = result
