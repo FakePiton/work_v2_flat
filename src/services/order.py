@@ -1,5 +1,5 @@
 import os
-from docxtpl import DocxTemplate
+from docx import Document
 from babel.dates import format_date
 from datetime import datetime, timedelta
 from src.services.data_repository import PandasDataRepository
@@ -33,9 +33,20 @@ class NewOrder:
 
         return path_mount
 
-    def create_template(self, path_dir_server: str, path_order_template: str):
-        tpl = DocxTemplate(path_order_template)
+    def _replace_text_in_doc(self, doc, replacements):
+        for paragraph in doc.paragraphs:
+            for old, new in replacements.items():
+                if old in paragraph.text:
+                    paragraph.text = paragraph.text.replace(old, str(new))
 
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    for old, new in replacements.items():
+                        if old in cell.text:
+                            cell.text = cell.text.replace(old, str(new))
+
+    def create_template(self, path_dir_server: str, path_order_template: str):
         now = datetime.now()
         tomorrow = now + timedelta(days=1)
         formatted_date = self.format_ukrainian_date(tomorrow)
@@ -43,22 +54,25 @@ class NewOrder:
         number = self.pd_data_repository.get_order_number_by_date(date=now.date())
         today_str = now.date().strftime("%d.%m.%Y")
 
-        row = {
-            "date": today_str,
-            "number": number,
-            "date_prod": formatted_date,
+        replacements = {
+            "{{ date }}": today_str,
+            "{{ number }}": number,
+            "{{ date_prod }}": formatted_date,
         }
-
-        tpl.render(row)
 
         path_server = self.get_path_server(date=now, path_dir_server=path_dir_server)
 
-        file_name = f"\НАКАЗ №{number} від {today_str} в процесі.docx"
-        new_file = f"{path_server}{file_name}"
+        file_name = f"НАКАЗ №{number} від {today_str} в процесі.docx"
+        new_file = os.path.join(path_server, file_name)
 
         if os.path.isfile(new_file):
-            self.text_info += f"📄 Файл вже існує:{new_file} \n"
+            self.text_info += f"📄 Файл вже існує: {new_file}\n"
             return None
 
-        tpl.save(f"{path_server}{file_name}")
+        doc = Document(path_order_template)
+
+        self._replace_text_in_doc(doc, replacements)
+
+        doc.save(new_file)
+
         self.text_info += f"✅ Шаблон створено: {file_name}"
